@@ -1,0 +1,8 @@
+name: KarhuAlerts
+version: '${project.version}'
+main: ir.alijk.karhualerts.KarhuAlerts
+authors: [ Alijk ]
+description: Karhu Anticheat proxy wide alert system
+depend:
+  - KarhuAPI
+api-version: 1.13

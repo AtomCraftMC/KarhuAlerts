@@ -1,0 +1,2 @@
+server-name: "Lobby"
+alert-format: "&8[&4%server%&8] &b%player% &7failed &b%check% &8[&7x&b%vl%&8] &8[&7P:&b%ping%&8]"
