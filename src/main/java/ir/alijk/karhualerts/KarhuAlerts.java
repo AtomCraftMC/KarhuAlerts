@@ -30,9 +30,8 @@ public final class KarhuAlerts extends MegaPlugin {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission(ALERT_PERMISSION)) {
                     TextComponent message = new TextComponent(data[2]);
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ctp " + data[1]));
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Common.colorize("&aClick to teleport to target")).create()));
-
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Config.ALERT_CLICK_COMMAND.replace("%player%", data[1])));
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Common.colorize(Config.ALERT_HOVER_MESSAGE)).create()));
                     p.spigot().sendMessage(message);
                 }
             }
