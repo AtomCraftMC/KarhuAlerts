@@ -43,16 +43,20 @@ public final class KarhuAlerts extends MegaPlugin {
                                             .replace("%player%", data[1])
                             )
                     );
-                    message.setHoverEvent(
-                            new HoverEvent(
-                                    HoverEvent.Action.SHOW_TEXT,
-                                    new ComponentBuilder(
-                                            p.hasPermission(HOVER_DEBUG_PERMISSION)
-                                                    ? Common.colorize(data[2])
-                                                    : Common.colorize(Config.ALERT_HOVER_MESSAGE)
-                                    ).create()
-                            )
-                    );
+
+                    if (data[2] != null) {
+                        message.setHoverEvent(
+                                new HoverEvent(
+                                        HoverEvent.Action.SHOW_TEXT,
+                                        new ComponentBuilder(
+                                                p.hasPermission(HOVER_DEBUG_PERMISSION)
+                                                        ? Common.colorize(data[2])
+                                                        : Common.colorize(Config.ALERT_HOVER_MESSAGE)
+                                        ).create()
+                                )
+                        );
+                    }
+                    
                     p.spigot().sendMessage(message);
                 }
             }
