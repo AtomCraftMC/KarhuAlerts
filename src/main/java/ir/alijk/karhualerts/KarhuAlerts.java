@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 public final class KarhuAlerts extends MegaPlugin {
     private String ALERT_PERMISSION = "karhu.alerts";
+    private String HOVER_DEBUG_PERMISSION = "karhu.hover-debug";
 
     @Override
     public void onPluginEnable() {
@@ -28,15 +29,30 @@ public final class KarhuAlerts extends MegaPlugin {
         }
 
         getBungeeApi().registerForwardListener("karhu:alerts", (channelName, player, bytes) -> {
-            String[] data = (new String(bytes)).split(",");
+            String[] data = (new String(bytes)).split(",,,");
 
             if (data[0].equalsIgnoreCase(Config.SERVER_NAME)) return;
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission(ALERT_PERMISSION)) {
-                    TextComponent message = new TextComponent(data[2]);
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Config.ALERT_CLICK_COMMAND.replace("%player%", data[1])));
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Common.colorize(Config.ALERT_HOVER_MESSAGE)).create()));
+                    TextComponent message = new TextComponent(data[3]);
+                    message.setClickEvent(
+                            new ClickEvent(
+                                    ClickEvent.Action.RUN_COMMAND,
+                                    Config.ALERT_CLICK_COMMAND
+                                            .replace("%player%", data[1])
+                            )
+                    );
+                    message.setHoverEvent(
+                            new HoverEvent(
+                                    HoverEvent.Action.SHOW_TEXT,
+                                    new ComponentBuilder(
+                                            p.hasPermission(HOVER_DEBUG_PERMISSION)
+                                                    ? Common.colorize(data[2])
+                                                    : Common.colorize(Config.ALERT_HOVER_MESSAGE)
+                                    ).create()
+                            )
+                    );
                     p.spigot().sendMessage(message);
                 }
             }

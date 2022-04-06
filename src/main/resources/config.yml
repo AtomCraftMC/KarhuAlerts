@@ -1,7 +1,7 @@
 send-alerts: true
 server-name: "lobby"
-alert-format: "&8[&4%server%&8] &b%player% &7failed &b%check% &8[&7x&b%vl%&8] &8[&7P:&b%player_ping%&8&8|&7T:&b%server_tps%&8]"
+alert-format: "&8[&4%server%&8] &b%player% &7failed &b%check% &8[&7x&b%vl%&8] &8[&7P:&b%player_ping%&8&8|&7T:&b%server_tps_1%&8]"
 alert-delay: 100
-ban-format: "&8[&4%server%&8] &b%player% &7punished for &b%check% &8[&7P:&b%ping%&8]"
+ban-format: "&8[&4%server%&8] &b%player% &7punished for &b%check%"
 alert-click-command: "/ctp %player%"
 alert-hover-message: "&aClick to teleport to target"

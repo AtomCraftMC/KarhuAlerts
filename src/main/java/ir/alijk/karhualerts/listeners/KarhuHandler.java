@@ -8,6 +8,7 @@ import me.liwk.karhu.api.event.KarhuEvent;
 import me.liwk.karhu.api.event.KarhuListener;
 import me.liwk.karhu.api.event.impl.KarhuAlertEvent;
 import me.liwk.karhu.api.event.impl.KarhuBanEvent;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -23,7 +24,8 @@ public class KarhuHandler implements KarhuListener {
     public void onEvent(KarhuEvent event) {
         String formatted = null, playerName = null;
         Player player = null;
-        
+        String hover = null;
+
         if(event instanceof KarhuAlertEvent){
             if (!(Config.SEND_ALERTS)) return;
             if (!(System.currentTimeMillis() - delay >= Config.ALERT_DELAY)) return;
@@ -42,6 +44,7 @@ public class KarhuHandler implements KarhuListener {
                                     .replace("%player%", playerName)
                                     .replace("%check%", checkName)
                                     .replace("%vl%", Integer.toString(violation));
+            hover = "&7Info:\n&4" + alertEvent.getDebug().getDebug() + "\n&8[&bPing: &40 &bTPS: &420.0&8]";
 
             delay = System.currentTimeMillis();
         } else if (event instanceof KarhuBanEvent) {
@@ -59,14 +62,25 @@ public class KarhuHandler implements KarhuListener {
 
         }
 
-        if (formatted != null) alert(PlaceholderAPI.setPlaceholders(player, formatted), playerName);
+        if (formatted != null) {
+            alert(
+                    PlaceholderAPI.setPlaceholders(player, formatted),
+                    hover,
+                    playerName
+            );
+        }
     }
 
-    private void alert(String message, String playerName) {
+    private void alert(String message, String hoverMessage, String playerName) {
         KarhuAlerts.getBungeeApi().forward(
                 "ALL",
                 "karhu:alerts",
-                (Config.SERVER_NAME + "," + playerName + "," + Common.colorize(message)).getBytes()
+                (
+                        Config.SERVER_NAME +
+                                ",,," + playerName +
+                                ",,," + hoverMessage +
+                                ",,," + Common.colorize(message)
+                ).getBytes()
         );
     }
 }
