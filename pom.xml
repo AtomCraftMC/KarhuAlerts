@@ -91,7 +91,7 @@
             <artifactId>api</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
-            <systemPath>G:/Library/plugins/KarhuAPI-1.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/libs/KarhuAPI-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
