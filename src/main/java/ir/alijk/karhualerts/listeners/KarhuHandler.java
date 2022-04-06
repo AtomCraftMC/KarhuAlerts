@@ -3,6 +3,7 @@ package ir.alijk.karhualerts.listeners;
 import ir.alijk.karhualerts.KarhuAlerts;
 import ir.alijk.karhualerts.config.Config;
 import ir.jeykey.megacore.utils.Common;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.liwk.karhu.api.event.KarhuEvent;
 import me.liwk.karhu.api.event.KarhuListener;
 import me.liwk.karhu.api.event.impl.KarhuAlertEvent;
@@ -21,43 +22,44 @@ public class KarhuHandler implements KarhuListener {
     @Override
     public void onEvent(KarhuEvent event) {
         String formatted = null, playerName = null;
-
+        Player player = null;
+        
         if(event instanceof KarhuAlertEvent){
             if (!(Config.SEND_ALERTS)) return;
             if (!(System.currentTimeMillis() - delay >= Config.ALERT_DELAY)) return;
 
             KarhuAlertEvent alertEvent = (KarhuAlertEvent) event;
 
-            Player player = alertEvent.getPlayer();
+            player = alertEvent.getPlayer();
             playerName = player.getName();
             String checkName = alertEvent.getCheck().getName();
+            if (alertEvent.getCheck().isExperimental()) checkName = checkName + "&aΔ";
+
             int violation = alertEvent.getViolations();
-            int ping = -1;
+
             formatted = Config.ALERT_FORMAT
                                     .replace("%server%", Config.SERVER_NAME)
                                     .replace("%player%", playerName)
                                     .replace("%check%", checkName)
-                                    .replace("%vl%", Integer.toString(violation))
-                                    .replace("%ping%", Integer.toString(ping));
+                                    .replace("%vl%", Integer.toString(violation));
 
             delay = System.currentTimeMillis();
         } else if (event instanceof KarhuBanEvent) {
             KarhuBanEvent banEvent = (KarhuBanEvent) event;
 
-            Player player = banEvent.getPlayer();
+            player = banEvent.getPlayer();
             playerName = player.getName();
             String checkName = banEvent.getCheck().getName();
-            int ping = -1;
+            if (banEvent.getCheck().isExperimental()) checkName = checkName + "&aΔ";
 
             formatted = Config.BAN_FORMAT
                     .replace("%server%", Config.SERVER_NAME)
                     .replace("%player%", playerName)
-                    .replace("%check%", checkName)
-                    .replace("%ping%", Integer.toString(ping));
+                    .replace("%check%", checkName);
 
         }
 
-        if (formatted != null) alert(formatted, playerName);
+        if (formatted != null) alert(PlaceholderAPI.setPlaceholders(player, formatted), playerName);
     }
 
     private void alert(String message, String playerName) {

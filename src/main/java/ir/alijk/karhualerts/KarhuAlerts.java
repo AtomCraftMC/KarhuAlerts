@@ -22,6 +22,11 @@ public final class KarhuAlerts extends MegaPlugin {
         getConfigManager().register(Config.class);
         KarhuAPI.getEventRegistry().addListener(new KarhuHandler());
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         getBungeeApi().registerForwardListener("karhu:alerts", (channelName, player, bytes) -> {
             String[] data = (new String(bytes)).split(",");
 

@@ -5,4 +5,5 @@ authors: [ Alijk ]
 description: Karhu Anticheat proxy wide alert system
 depend:
   - KarhuAPI
+  - PlaceholderAPI
 api-version: 1.13
