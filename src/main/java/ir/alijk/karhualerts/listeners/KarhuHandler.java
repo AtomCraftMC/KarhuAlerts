@@ -16,12 +16,16 @@ import java.nio.charset.StandardCharsets;
 public class KarhuHandler implements KarhuListener {
     private static Method getHandleMethod;
     private static Field pingField;
+    private long delay = 0;
 
     @Override
     public void onEvent(KarhuEvent event) {
         String formatted = null, playerName = null;
 
         if(event instanceof KarhuAlertEvent){
+            if (!(Config.SEND_ALERTS)) return;
+            if (!(System.currentTimeMillis() - delay >= Config.ALERT_DELAY)) return;
+
             KarhuAlertEvent alertEvent = (KarhuAlertEvent) event;
 
             Player player = alertEvent.getPlayer();
@@ -29,13 +33,14 @@ public class KarhuHandler implements KarhuListener {
             String checkName = alertEvent.getCheck().getName();
             int violation = alertEvent.getViolations();
             int ping = -1;
-
             formatted = Config.ALERT_FORMAT
                                     .replace("%server%", Config.SERVER_NAME)
                                     .replace("%player%", playerName)
                                     .replace("%check%", checkName)
                                     .replace("%vl%", Integer.toString(violation))
                                     .replace("%ping%", Integer.toString(ping));
+
+            delay = System.currentTimeMillis();
         } else if (event instanceof KarhuBanEvent) {
             KarhuBanEvent banEvent = (KarhuBanEvent) event;
 

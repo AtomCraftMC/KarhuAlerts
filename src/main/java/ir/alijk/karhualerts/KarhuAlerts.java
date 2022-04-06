@@ -36,11 +36,8 @@ public final class KarhuAlerts extends MegaPlugin {
                 }
             }
         });
-
     }
 
     @Override
-    public void onPluginDisable() {
-
-    }
+    public void onPluginDisable() {}
 }
